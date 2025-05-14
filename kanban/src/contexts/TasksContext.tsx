@@ -17,9 +17,18 @@ interface TasksContextProviderProps{
 export const  TasksContextProvider: React.FC<TasksContextProviderProps> = ({children})=> {
 
     const [ tasks, setTasks] = useState<Task[]>([])
+
+    // useEffect(() => {
+    // tasksService.fetchTasks().then((data) => setTasks(data))
+    // }, [])
     useEffect(() => {
-    tasksService.fetchTasks().then((data) => setTasks(data))
-    }, [])
+        const loadTasks = () => tasksService.fetchTasks().then(setTasks)
+        loadTasks()
+      
+        const interval = setInterval(loadTasks, 0.5) // Atualiza a cada 5s
+        
+        return () => clearInterval(interval)
+      }, [])
 
     const createTask = async(attributes: Omit<Task, "id">) => {
         const newTask = await tasksService.createTask(attributes)

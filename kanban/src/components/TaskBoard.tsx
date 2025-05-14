@@ -4,6 +4,7 @@ import { TaskCard } from "./TaskCard"
 import { useTasks } from "../hooks/useTasks"
 
 export const TaskBoard: React.FC = () => {
+
     const { tasks } = useTasks()
 
     const tasksTodo: Task[] = tasks.filter(tasks => tasks.status == "todo") ?? []
